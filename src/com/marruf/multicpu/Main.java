@@ -1,6 +1,8 @@
-package com.marruf.multicpu.core;
+package com.marruf.multicpu;
 
 import com.marruf.multicpu.allocation.AllocationPolicy;
+import com.marruf.multicpu.core.Node;
+import com.marruf.multicpu.core.SystemSimulation;
 import com.marruf.multicpu.generator.TaskGenerator;
 import com.marruf.multicpu.log.Log;
 
