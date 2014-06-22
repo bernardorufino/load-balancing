@@ -12,6 +12,8 @@ public class Node implements Seekable {
     private Task mLastCompletedTask = null;
     private int mTime = 0;
     private int mSeekTime;
+    private int mReceivedMessages = 0;
+    private int mSentMessages = 0;
 
     public Node(int id) {
         mId = id;
@@ -62,6 +64,22 @@ public class Node implements Seekable {
 
     public Deque<Task> getTaskQueue() {
         return mTaskQueue;
+    }
+
+    public void sendMessage() {
+        mSentMessages++;
+    }
+
+    public int getSentMessages() {
+        return mSentMessages;
+    }
+
+    public void receiveMessage() {
+        mReceivedMessages++;
+    }
+
+    public int getReceivedMessages() {
+        return mReceivedMessages;
     }
 
     @Override

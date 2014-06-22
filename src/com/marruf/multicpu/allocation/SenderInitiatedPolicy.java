@@ -16,6 +16,8 @@ public class SenderInitiatedPolicy extends NoAllocationPolicy {
 
         Node receiver = node;
         for (Node p : allNodes) {
+            node.sendMessage();
+            p.receiveMessage();
             if (!p.hasWork()) {
                 receiver = p;
                 break;

@@ -6,6 +6,8 @@ import com.marruf.multicpu.log.Log;
 
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkState;
+
 public class Main {
 
     public static final boolean DUMP = true;
@@ -29,7 +31,36 @@ public class Main {
     public static void main(String[] args) {
         SystemSimulation system = new SystemSimulation(4, NORMAL, AllocationPolicy.RECEIVER_INITIATED);
         system.run();
+        printMessageSummary(system.getNodes());
+        System.out.println();
         printHistory(system.getHistory());
+    }
+
+    private static void printMessageSummary(List<Node> nodes) {
+        int sentMessages = 0;
+        int receivedMessages = 0;
+        Node mostSent = nodes.get(0);
+        Node leastSent = nodes.get(0);
+        Node mostReceived = nodes.get(0);
+        Node leastReceived = nodes.get(0);
+        System.out.println("Node id: Sent messages, Received messages");
+        for (Node node : nodes) {
+            int sents = node.getSentMessages();
+            int receiveds = node.getReceivedMessages();
+            sentMessages += sents;
+            receivedMessages += receiveds;
+            if (sents > mostSent.getSentMessages()) mostSent = node;
+            if (sents < leastSent.getSentMessages()) leastSent = node;
+            if (receiveds > mostReceived.getReceivedMessages()) mostReceived = node;
+            if (receiveds < leastReceived.getReceivedMessages()) leastReceived = node;
+            System.out.println("Node " + node.getId() + ": " + sents + " sents, " + receiveds + " receiveds");
+        }
+        System.out.println("The node with most sent messages was " + mostSent.getId() + " with " + mostSent.getSentMessages() + " messages");
+        System.out.println("The node with least sent messages was " + leastSent.getId() + " with " + leastSent.getSentMessages() + " messages");
+        System.out.println("The node with most received messages was " + mostReceived.getId() + " with " + mostReceived.getReceivedMessages() + " messages");
+        System.out.println("The node with least received messages was " + leastReceived.getId() + " with " + leastReceived.getReceivedMessages() + " messages");
+        checkState(receivedMessages == sentMessages);
+        System.out.println("The total of sent and received messages was " + sentMessages);
     }
 
     private static void printHistory(List<Log.Event> history) {

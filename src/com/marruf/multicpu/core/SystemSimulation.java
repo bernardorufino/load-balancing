@@ -67,8 +67,8 @@ public class SystemSimulation {
             }
 
             log.dumpNodes(mNodes);
-            System.out.println(log.shortDescription());
-            System.out.println(log.nodesDump);
+            // System.out.println(log.shortDescription());
+            // System.out.println(log.nodesDump);
             mHistory.add(log);
         }
     }
@@ -77,7 +77,25 @@ public class SystemSimulation {
         return mHistory;
     }
 
+    public int getSentMessages() {
+        int count = 0;
+        for (Node node : mNodes) {
+            count += node.getSentMessages();
+        }
+        return count;
+    }
 
+    public int getReceivedMessages() {
+        int count = 0;
+        for (Node node : mNodes) {
+            count += node.getReceivedMessages();
+        }
+        return count;
+    }
+
+    public List<Node> getNodes() {
+        return mNodes;
+    }
 
     private final static Comparator<? super Node> NODE_COMPARATOR = new Comparator<Node>() {
         @Override

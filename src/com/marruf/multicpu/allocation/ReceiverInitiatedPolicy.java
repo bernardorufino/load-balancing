@@ -15,19 +15,21 @@ public class ReceiverInitiatedPolicy extends NoAllocationPolicy {
         if (node.hasWork()) return;
         /* TODO: Log number of messages */
 
-        Node donor = null;
-        for (Node worker : workerNodes) {
-            if (worker.getTaskQueue().size() >= 2) {
-                donor = worker;
+        Node worker = null;
+        for (Node p : workerNodes) {
+            node.sendMessage();
+            p.receiveMessage();
+            if (p.getTaskQueue().size() >= 2) {
+                worker = p;
                 break;
             }
         }
-        if (donor == null) return;
+        if (worker == null) return;
 
-        Deque<Task> taskQueue = donor.getTaskQueue();
+        Deque<Task> taskQueue = worker.getTaskQueue();
         Task task = taskQueue.removeLast();
         node.submit(task);
         workerNodes.add(node);
-        log.actions.add(new Log.TaskOwnerChange(task.getId(), donor.getId(), node.getId()));
+        log.actions.add(new Log.TaskOwnerChange(task.getId(), worker.getId(), node.getId()));
     }
 }
