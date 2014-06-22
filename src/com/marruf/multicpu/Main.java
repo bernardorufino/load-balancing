@@ -19,7 +19,8 @@ public class Main {
     public static final AllocationPolicy[] POLICIES = {
             AllocationPolicy.NO_POLICY,
             AllocationPolicy.RECEIVER_INITIATED,
-            AllocationPolicy.SENDER_INITIATED
+            AllocationPolicy.SENDER_INITIATED,
+            AllocationPolicy.RECEIVER_AND_SENDER
     };
 
     public static final boolean HISTORY = false;
