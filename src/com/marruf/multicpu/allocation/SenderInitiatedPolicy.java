@@ -28,4 +28,9 @@ public class SenderInitiatedPolicy extends NoAllocationPolicy {
         }
         return receiver;
     }
+
+    @Override
+    public String toString() {
+        return "Sender Initiated";
+    }
 }

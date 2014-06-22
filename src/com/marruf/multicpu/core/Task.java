@@ -34,4 +34,14 @@ public class Task implements Seekable {
     public int getProcessingTimeRequired() {
         return mProcessingTimeRequired;
     }
+
+    @Override
+    public String toString() {
+        return "Task< " +
+                mId +
+                ": node = " + mNodeId +
+                ", createdAt = " + mCreatedAt +
+                ", length = " + mProcessingTimeRequired +
+                '>';
+    }
 }

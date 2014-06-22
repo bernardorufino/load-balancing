@@ -40,7 +40,7 @@ public class Log {
 
         @Override
         public String shortDescription() {
-            return String.format("TASK_SUBMISSION(N%d <- T%s)", nodeId, taskId);
+            return String.format("TASK_SUBMISSION(%d <- T%s)", nodeId, taskId);
         }
     }
 
@@ -61,7 +61,7 @@ public class Log {
 
         @Override
         public String shortDescription() {
-            return String.format("TASK_COMPLETION(N%d, T%s)", nodeId, taskId);
+            return String.format("TASK_COMPLETION(%d, t%s)", nodeId, taskId);
         }
     }
 
@@ -84,7 +84,7 @@ public class Log {
 
         @Override
         public String shortDescription() {
-            return String.format("TASK_CHANGE(T%s, N%d -> N%d)", taskId, oldNodeId, newNodeId);
+            return String.format("TASK_CHANGE(t%s, %d -> %d)", taskId, oldNodeId, newNodeId);
         }
     }
 

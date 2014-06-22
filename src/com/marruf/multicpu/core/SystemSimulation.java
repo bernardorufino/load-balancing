@@ -20,6 +20,7 @@ public class SystemSimulation {
     private final PeekingIterator<Task> mTaskFlow;
     private final List<Log.Event> mHistory = new ArrayList<>();
     private final AllocationPolicy mAllocation;
+    private int mTime;
 
     public SystemSimulation(int numberOfNodes, Iterable<Task> tasks, AllocationPolicy allocation) {
         mNodes = new ArrayList<>(numberOfNodes);
@@ -35,8 +36,8 @@ public class SystemSimulation {
     public void run() {
         while (mTaskFlow.hasNext() || !mWorkers.isEmpty()) {
             Seekable seekable = Utils.getSmallest(Seekable.COMPARATOR, mWorkers.peek(), mTaskFlow.hasNext() ? mTaskFlow.peek() : null);
-            int time = seekable.getSeekTime();
-            Log.Event log = new Log.Event(time);
+            mTime = seekable.getSeekTime();
+            Log.Event log = new Log.Event(mTime);
 
             if (seekable instanceof Node) { // A task has just been completed
                 Node node = mWorkers.poll();
@@ -61,7 +62,7 @@ public class SystemSimulation {
                 boolean wasIdle = !node.hasWork();
                 node.submit(task);
                 if (wasIdle) {
-                    node.setTimeAfterIdle(time);
+                    node.setTimeAfterIdle(mTime);
                     mWorkers.add(node);
                 }
             }
@@ -77,20 +78,8 @@ public class SystemSimulation {
         return mHistory;
     }
 
-    public int getSentMessages() {
-        int count = 0;
-        for (Node node : mNodes) {
-            count += node.getSentMessages();
-        }
-        return count;
-    }
-
-    public int getReceivedMessages() {
-        int count = 0;
-        for (Node node : mNodes) {
-            count += node.getReceivedMessages();
-        }
-        return count;
+    public int getFinishTime() {
+        return mTime;
     }
 
     public List<Node> getNodes() {

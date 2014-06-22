@@ -1,7 +1,7 @@
 package com.marruf.multicpu.core;
 
-import com.google.common.collect.ImmutableList;
 import com.marruf.multicpu.allocation.AllocationPolicy;
+import com.marruf.multicpu.generator.TaskGenerator;
 import com.marruf.multicpu.log.Log;
 
 import java.util.List;
@@ -10,30 +10,33 @@ import static com.google.common.base.Preconditions.checkState;
 
 public class Main {
 
-    public static final boolean DUMP = true;
+    public static final int NODES = 4;
+    public static final int AVERAGE_TASK_LENGTH = 15; // In seconds
+    public static final int DURATION = 100; // In seconds
+    public static final TaskGenerator GENERATOR = TaskGenerator.heavyLoad(NODES, AVERAGE_TASK_LENGTH, DURATION);
+    public static final AllocationPolicy[] POLICIES = {
+            AllocationPolicy.NO_POLICY,
+            AllocationPolicy.RECEIVER_INITIATED,
+            AllocationPolicy.SENDER_INITIATED
+    };
+
+    public static final boolean HISTORY = false;
+    public static final boolean DUMP = false;
     public static final boolean SHORT = true;
 
-    private static final List<Task> NORMAL = ImmutableList.of(
-            new Task("1", 0,  5, 50),
-            new Task("2", 0, 10, 20),
-            new Task("3", 1, 15, 10),
-            new Task("4", 2, 20, 5),
-            new Task("5", 3, 25, 70),
-            new Task("6", 1, 30, 10),
-            new Task("7", 2, 35, 10),
-            new Task("8", 2, 40,  5),
-            new Task("9", 3, 45, 10));
-
-    private static final List<Task> IDLE = ImmutableList.of(
-            new Task("1", 0,  5, 10),
-            new Task("2", 0, 20, 10));
-
     public static void main(String[] args) {
-        SystemSimulation system = new SystemSimulation(4, NORMAL, AllocationPolicy.RECEIVER_INITIATED);
-        system.run();
-        printMessageSummary(system.getNodes());
-        System.out.println();
-        printHistory(system.getHistory());
+        for (AllocationPolicy policy : POLICIES) {
+            SystemSimulation system = new SystemSimulation(NODES, GENERATOR, policy);
+            system.run();
+
+            System.out.println("\n==== " + policy + " ===\n");
+            System.out.println("Finish time = " + system.getFinishTime());
+            System.out.println();
+            printMessageSummary(system.getNodes());
+            System.out.println();
+            if (HISTORY) printHistory(system.getHistory());
+
+        }
     }
 
     private static void printMessageSummary(List<Node> nodes) {
@@ -72,5 +75,18 @@ public class Main {
         }
     }
 
-
+//    private static final List<Task> NORMAL = ImmutableList.of(
+//            new Task("1", 0, 5, 50),
+//            new Task("2", 0, 10, 20),
+//            new Task("3", 1, 15, 10),
+//            new Task("4", 2, 20, 5),
+//            new Task("5", 3, 25, 70),
+//            new Task("6", 1, 30, 10),
+//            new Task("7", 2, 35, 10),
+//            new Task("8", 2, 40, 5),
+//            new Task("9", 3, 45, 10));
+//
+//    private static final List<Task> IDLE = ImmutableList.of(
+//            new Task("1", 0, 5, 10),
+//            new Task("2", 0, 20, 10));
 }

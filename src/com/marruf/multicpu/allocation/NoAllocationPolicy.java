@@ -18,4 +18,9 @@ public class NoAllocationPolicy implements AllocationPolicy {
     public Node changeOwnerNodeForTask(Task task, Node node, PriorityQueue<Node> workerNodes, List<Node> allNodes, Log.Event log) {
         return node;
     }
+
+    @Override
+    public String toString() {
+        return "No Allocation";
+    }
 }

@@ -32,4 +32,9 @@ public class ReceiverInitiatedPolicy extends NoAllocationPolicy {
         workerNodes.add(node);
         log.actions.add(new Log.TaskOwnerChange(task.getId(), worker.getId(), node.getId()));
     }
+
+    @Override
+    public String toString() {
+        return "Receiver Initiated";
+    }
 }
