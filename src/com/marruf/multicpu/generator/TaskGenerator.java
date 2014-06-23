@@ -1,8 +1,10 @@
 package com.marruf.multicpu.generator;
 
+import com.google.common.collect.Lists;
 import com.marruf.multicpu.core.Task;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -38,6 +40,7 @@ public class TaskGenerator implements Iterable<Task> {
     private final int mTaskLengthMean;
     private final int mNodes;
     private final int mTaskLengthDeviation;
+    private final List<Task> mIteratorMemory;
 
     public TaskGenerator(int nodes, int period, int taskLengthMean, int taskLengthDeviation, int duration) {
         mNodes = nodes;
@@ -45,15 +48,15 @@ public class TaskGenerator implements Iterable<Task> {
         mTaskLengthMean = taskLengthMean;
         mTaskLengthDeviation = taskLengthDeviation;
         mDuration = duration;
+        mIteratorMemory = Lists.newArrayList(new TaskIterator());
     }
 
     @Override
     public Iterator<Task> iterator() {
-        return new TaskIterator();
+        return mIteratorMemory.iterator();
     }
 
-    private class TaskIterator implements  Iterator<Task> {
-
+    private class TaskIterator implements Iterator<Task> {
 
         private Random mRandom = new Random();
         private int mTime = 0;
