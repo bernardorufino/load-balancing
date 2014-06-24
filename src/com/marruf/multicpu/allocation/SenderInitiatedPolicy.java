@@ -11,13 +11,13 @@ public class SenderInitiatedPolicy extends NoAllocationPolicy {
 
     @Override
     public Node changeOwnerNodeForTask(Task task, Node node, PriorityQueue<Node> workerNodes, List<Node> allNodes, Log.Event log) {
-        if (!node.hasWork()) return node;
+        if (!OverloadedPolicy.isOverloaded(node, allNodes)) return node;
 
         Node receiver = node;
         for (Node p : allNodes) {
             node.sendMessage();
             p.receiveMessage();
-            if (!p.hasWork()) {
+            if (!OverloadedPolicy.isOverloaded(p, allNodes)) {
                 receiver = p;
                 break;
             }

@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkState;
 public class Main {
 
     public static final int NODES = 8;
-    public static final int AVERAGE_TASK_LENGTH = 65; // In seconds
+    public static final int AVERAGE_TASK_LENGTH = 80; // In seconds
     public static final int DURATION = 1000; // In seconds
     public static final TaskGenerator GENERATOR = TaskGenerator.heavyLoad(NODES, AVERAGE_TASK_LENGTH, DURATION);
     public static final AllocationPolicy[] POLICIES = {

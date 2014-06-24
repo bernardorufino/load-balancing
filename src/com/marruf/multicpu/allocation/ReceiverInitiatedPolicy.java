@@ -12,13 +12,13 @@ public class ReceiverInitiatedPolicy extends NoAllocationPolicy {
 
     @Override
     public void afterTaskCompletion(Node node, PriorityQueue<Node> workerNodes, List<Node> allNodes, Log.Event log) {
-        if (node.hasWork()) return;
+        if (OverloadedPolicy.isOverloaded(node, allNodes)) return;
 
         Node worker = null;
         for (Node p : workerNodes) {
             node.sendMessage();
             p.receiveMessage();
-            if (p.getLoad() >= 2) {
+            if (OverloadedPolicy.isOverloaded(p, allNodes)) {
                 worker = p;
                 break;
             }
@@ -28,7 +28,7 @@ public class ReceiverInitiatedPolicy extends NoAllocationPolicy {
         Deque<Task> taskQueue = worker.getTaskQueue();
         Task task = taskQueue.removeLast();
         node.submit(task);
-        workerNodes.add(node);
+        if (node.getLoad() == 1) workerNodes.add(node);
         log.actions.add(new Log.TaskOwnerChange(task.getId(), worker.getId(), node.getId()));
     }
 
