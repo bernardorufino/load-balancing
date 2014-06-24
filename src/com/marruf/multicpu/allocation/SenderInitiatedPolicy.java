@@ -12,7 +12,6 @@ public class SenderInitiatedPolicy extends NoAllocationPolicy {
     @Override
     public Node changeOwnerNodeForTask(Task task, Node node, PriorityQueue<Node> workerNodes, List<Node> allNodes, Log.Event log) {
         if (!node.hasWork()) return node;
-        /* TODO: log messages */
 
         Node receiver = node;
         for (Node p : allNodes) {

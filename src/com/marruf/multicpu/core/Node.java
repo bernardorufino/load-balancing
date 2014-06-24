@@ -50,8 +50,8 @@ public class Node implements Seekable {
         return mLastCompletedTask;
     }
 
-    public int getTime() {
-        return mTime;
+    public int getLoad() {
+        return mTaskQueue.size();
     }
 
     public boolean hasWork() {

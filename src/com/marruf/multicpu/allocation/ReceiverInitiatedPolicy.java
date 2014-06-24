@@ -13,13 +13,12 @@ public class ReceiverInitiatedPolicy extends NoAllocationPolicy {
     @Override
     public void afterTaskCompletion(Node node, PriorityQueue<Node> workerNodes, List<Node> allNodes, Log.Event log) {
         if (node.hasWork()) return;
-        /* TODO: Log number of messages */
 
         Node worker = null;
         for (Node p : workerNodes) {
             node.sendMessage();
             p.receiveMessage();
-            if (p.getTaskQueue().size() >= 2) {
+            if (p.getLoad() >= 2) {
                 worker = p;
                 break;
             }
